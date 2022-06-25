@@ -4,4 +4,4 @@
 
 ## Tecnología Utilizadas
 
-### JQUERY con Ajax, BOOTSTRAP, LARAVEL
+### PHP con Laravel, JQUERY con Ajax, BOOTSTRAP, Toastr (alertas)
