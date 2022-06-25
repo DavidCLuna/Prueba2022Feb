@@ -7,8 +7,10 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Laravel</title>
+        <title>Prueba2022Feb</title>
 
+        <link rel="icon" href="https://www.garantiascomunitarias.com/wp-content/uploads/2021/02/cropped-fav-32x32.png" sizes="32x32">
+        
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -121,7 +123,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Modal Editar start -->
             <div class="warning-modal">
                 <div class="modal fade" id="ModalUpdate" tabindex="-1" aria-hidden="true">
