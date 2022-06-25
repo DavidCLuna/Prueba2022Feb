@@ -17,13 +17,16 @@ $("#btn_agregar").click(function(event) {
     event.preventDefault();
 
     // valida todos los campos del formulario
-    if (!validate_form('')) return
+    if (!validate_form('')) {
+        $("#btn_agregar").prop("disabled", false);
+        return
+    }
 
     var form = $('#form_agregar')[0];
     var data = new FormData(form);
 
     $.ajax({
-        url: 'http://127.0.0.1:8000/api/gce_caracteristicas',
+        url: '/api/gce_caracteristicas',
         enctype: 'multipart/form-data',
         data: data,
         type: 'post',
@@ -34,18 +37,19 @@ $("#btn_agregar").click(function(event) {
         success: function(response) {
             $("#btn_agregar").prop("disabled", false);
             clear_form('')
+            toastr.success('Registro agregado con éxito');
             getData()
         },
         statusCode: {
             404: function() {
-                alert('web not found');
+                toastr.error('web not found')
             }
         },
         error: function(x, xs, xt) {
             //nos dara el error si es que hay alguno
             // window.open(JSON.stringify(x));
             $("#btnSubmit").prop("disabled", false);
-            alert('error: ' + JSON.stringify(x) + "\n error string: " + xs + "\n error throwed: " + xt);
+            toastr.error('error: ' + JSON.stringify(x) + "\n error string: " + xs + "\n error throwed: " + xt);
         }
     });
     $("#btnSubmit").prop("disabled", false);
@@ -60,7 +64,7 @@ function eliminar_registro(id) {
     data.push({ "id": id });
 
     $.ajax({
-        url: `http://127.0.0.1:8000/api/gce_caracteristicas/${id}`,
+        url: `/api/gce_caracteristicas/${id}`,
         enctype: 'multipart/form-data',
         data: data,
         type: 'DELETE',
@@ -71,18 +75,19 @@ function eliminar_registro(id) {
         success: function(response) {
             assignDataTable(response)
             $("#btn_delete").prop("disabled", false);
+            toastr.success('Registro eliminado con éxito');
             getData()
         },
         statusCode: {
             404: function() {
-                alert('web not found');
+                toastr.error('web not found');
             }
         },
         error: function(x, xs, xt) {
             //nos dara el error si es que hay alguno
             // window.open(JSON.stringify(x));
             $("#btn_delete").prop("disabled", false);
-            alert('error: ' + JSON.stringify(x) + "\n error string: " + xs + "\n error throwed: " + xt);
+            toastr.error('error: ' + JSON.stringify(x) + "\n error string: " + xs + "\n error throwed: " + xt);
         }
     });
 }
@@ -92,7 +97,7 @@ function show_update_registro(id) {
     $("#ModalUpdate").modal("show")
 
     $.ajax({
-        url: `http://127.0.0.1:8000/api/gce_caracteristicas/${id}`,
+        url: `/api/gce_caracteristicas/${id}`,
         type: 'get',
         success: function(response) {
             clear_form('_update')
@@ -100,13 +105,13 @@ function show_update_registro(id) {
         },
         statusCode: {
             404: function() {
-                alert('web not found');
+                toastr.error('web not found');
             }
         },
         error: function(x, xs, xt) {
             //nos dara el error si es que hay alguno
             //window.open(JSON.stringify(x));
-            alert('error: ' + JSON.stringify(x) + "\n error string: " + xs + "\n error throwed: " + xt);
+            toastr.error('error: ' + JSON.stringify(x) + "\n error string: " + xs + "\n error throwed: " + xt);
         }
     });
 }
@@ -135,7 +140,10 @@ $("#btn_update").click(function(event) {
     event.preventDefault();
 
     // valida todos los campos del formulario
-    if (!validate_form('_update')) return
+    if (!validate_form('_update')) {
+        $("#btn_update").prop("disabled", false);
+        return
+    }
 
     var form = $('#form_update')[0];
     var data = new FormData(form);
@@ -144,7 +152,7 @@ $("#btn_update").click(function(event) {
     let id = $('#id_update').val()
 
     $.ajax({
-        url: `http://127.0.0.1:8000/api/gce_caracteristicas/${id}`,
+        url: `/api/gce_caracteristicas/${id}`,
         enctype: 'multipart/form-data',
         data: data,
         type: 'post',
@@ -155,19 +163,19 @@ $("#btn_update").click(function(event) {
         success: function(response) {
             $("#btn_update").prop("disabled", false);
             $("#ModalUpdate").modal("hide")
-            console.log('as')
+            toastr.success('Registro modificado con éxito');
             getData()
         },
         statusCode: {
             404: function() {
-                alert('web not found');
+                toastr.error('web not found');
             }
         },
         error: function(x, xs, xt) {
             //nos dara el error si es que hay alguno
             // window.open(JSON.stringify(x));
             $("#btnSubmit").prop("disabled", false);
-            alert('error: ' + JSON.stringify(x) + "\n error string: " + xs + "\n error throwed: " + xt);
+            toastr.error('error: ' + JSON.stringify(x) + "\n error string: " + xs + "\n error throwed: " + xt);
         }
     });
     $("#btnSubmit").prop("disabled", false);
@@ -178,20 +186,20 @@ $("#btn_update").click(function(event) {
 function getData() {
 
     $.ajax({
-        url: 'http://127.0.0.1:8000/api/gce_caracteristicas',
+        url: '/api/gce_caracteristicas',
         type: 'get',
         success: function(response) {
             assignDataTable(response)
         },
         statusCode: {
             404: function() {
-                alert('web not found');
+                toastr.error('web not found');
             }
         },
         error: function(x, xs, xt) {
             //nos dara el error si es que hay alguno
-            window.open(JSON.stringify(x));
-            //alert('error: ' + JSON.stringify(x) +"\n error string: "+ xs + "\n error throwed: " + xt);
+            //window.open(JSON.stringify(x));
+            toastr.error('error: ' + JSON.stringify(x) + "\n error string: " + xs + "\n error throwed: " + xt);
         }
     });
 }
@@ -217,7 +225,7 @@ function assignDataTable(response) {
             `<td>${value['gce_teclado']}</td>` +
             `<td>${value['gce_mouse']}</td>` +
             `<td>${value['gce_pantalla']}</td>` +
-            `<td class="align-middle"><div class="form-check form-switch toggle-switch d-flex justify-content-center "><input ${check_estado} class="form-check-input" type="checkbox" id="toggleSwitch1"></div></td>` +
+            `<td class="align-middle"><div class="form-check form-switch toggle-switch d-flex justify-content-center "><input ${check_estado} disabled class="form-check-input opacity-1" type="checkbox" id="toggleSwitch1"></div></td>` +
             `<td class="text-center"><button class="btn btn-circle btn-circle-sm m-1" onclick="show_update_registro('${value['id']}')"><i class="fa fa-pencil" style="color: #29628D"></i></button><button id="btn_delete" class="btn btn-circle btn-circle-sm m-1" onclick="eliminar_registro('${value['id']}')"><i class="fa fa-trash" style="color: #FF4269"></i></button></td>` +
             `</tr`)
     });
@@ -226,48 +234,58 @@ function assignDataTable(response) {
 
 function validate_form(type) {
 
+    let status = true
+
     if ($(`#gce_nombre_equipo${type}`).length == 0 || $(`#gce_nombre_equipo${type}`).val() == "") {
-        alert('Error, falta ingresar el nombre del equipo')
-        return false
+        toastr.error('Error, falta ingresar el nombre del equipo')
+        status = false
     }
     if ($(`#gce_board${type}`).length == 0 || $(`#gce_board${type}`).val() == "") {
-        alert('Error, falta ingresar el nombre de la board')
-        return false
+        toastr.error('Error, falta ingresar el nombre de la board')
+        status = false
     }
     if ($(`#gce_case${type}`).length == 0 || $(`#gce_case${type}`).val() == "") {
-        alert('Error, falta ingresar el nombre del case')
-        return false
+        toastr.error('Error, falta ingresar el nombre del case')
+        status = false
     }
     if ($(`#gce_procesador${type}`).length == 0 || $(`#gce_procesador${type}`).val() == "") {
-        alert('Error, falta ingresar el nombre del procesador')
-        return false
+        toastr.error('Error, falta ingresar el nombre del procesador')
+        status = false
     }
     if ($(`#gce_grafica${type}`).length == 0 || $(`#gce_grafica${type}`).val() == "") {
-        alert('Error, falta ingresar el nombre de la gráfica')
-        return false
+        toastr.error('Error, falta ingresar el nombre de la gráfica')
+        status = false
     }
     if ($(`#gce_ram${type}`).length == 0 || $(`#gce_ram${type}`).val() == "") {
-        alert('Error, falta ingresar la cantidad de memoria ram')
-        return false
+        toastr.error('Error, falta ingresar la cantidad de memoria ram')
+        status = false
+    }
+    if ($(`#gce_ram${type}`).length == 0 || $(`#gce_ram${type}`).val() > 100) {
+        toastr.error('Error, la cantidad máxima de memoria que se puede agregar es 100')
+        status = false
     }
     if ($(`#gce_disco_duro${type}`).length == 0 || $(`#gce_disco_duro${type}`).val() == "") {
-        alert('Error, falta ingresar el nombre del disco duro')
-        return false
+        toastr.error('Error, falta ingresar el nombre del disco duro')
+        status = false
     }
     if ($(`#gce_teclado${type}`).length == 0 || $(`#gce_teclado${type}`).val() == "") {
-        alert('Error, falta ingresar la marca del teclado')
-        return false
+        toastr.error('Error, falta ingresar la marca del teclado')
+        status = false
     }
     if ($(`#gce_mouse${type}`).length == 0 || $(`#gce_mouse${type}`).val() == "") {
-        alert('Error, falta ingresar la marca del mouse')
-        return false
+        toastr.error('Error, falta ingresar la marca del mouse')
+        status = false
     }
     if ($(`#gce_pantalla${type}`).length == 0 || $(`#gce_pantalla${type}`).val() == "") {
-        alert('Error, falta ingresar las pulgadas de la pantalla')
-        return false
+        toastr.error('Error, falta ingresar las pulgadas de la pantalla')
+        status = false
+    }
+    if ($(`#gce_pantalla${type}`).length == 0 || $(`#gce_pantalla${type}`).val() > 100) {
+        toastr.error('Error, la cantidad máxima de pulgadas que se puede agregar es 100')
+        status = false
     }
 
-    return true
+    return status
 }
 
 function clear_form(type) {

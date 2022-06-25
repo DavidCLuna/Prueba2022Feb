@@ -14,6 +14,10 @@
     background-color: #1A4465 !important;
 }
 
+.opacity-1 {
+    opacity: 1 !important;
+}
+
 .w-10 {
     width: 10%;
 }

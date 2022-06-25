@@ -1,5 +1,7 @@
 # Configuración
+- Git Clone
+- Composer update en la carpeta Laravel
 
 ## Tecnología Utilizadas
 
-### JQUERY, BOOTSTRAP, LARAVEL
+### JQUERY con Ajax, BOOTSTRAP, LARAVEL
