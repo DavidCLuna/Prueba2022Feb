@@ -59,15 +59,15 @@ class GceCaracteristicasController extends Controller
     {
 
         $validatedData = $request->validate([
-            'gce_nombre_equipo' => ['required', 'string', 'min:3'],
-            'gce_board' => ['required', 'string', 'min:3'],
-            'gce_case' => ['required', 'string', 'min:3'],
-            'gce_procesador' => ['required', 'string', 'min:3'],
-            'gce_grafica' => ['required', 'string', 'min:3'],
+            'gce_nombre_equipo' => ['required', 'string', 'min:1'],
+            'gce_board' => ['required', 'string', 'min:1'],
+            'gce_case' => ['required', 'string', 'min:1'],
+            'gce_procesador' => ['required', 'string', 'min:1'],
+            'gce_grafica' => ['required', 'string', 'min:1'],
             'gce_ram' => ['required', 'min:1|max:100'],
-            'gce_disco_duro' => ['required', 'string', 'min:3'],
-            'gce_teclado' => ['required', 'string', 'min:3'],
-            'gce_mouse' => ['required', 'string', 'min:3'],
+            'gce_disco_duro' => ['required', 'string', 'min:1'],
+            'gce_teclado' => ['required', 'string', 'min:1'],
+            'gce_mouse' => ['required', 'string', 'min:1'],
             'gce_pantalla' => ['required', 'min:1|max:100'],
         ]);
 
